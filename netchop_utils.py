@@ -10,24 +10,26 @@ def name_peptide(peptide):
 
 
 def compute_score(peptide):
-    score = peptide[-1][3]
-    for entry in peptide[:-1]:
-        if entry[2] == 'S':
-            score -= entry[3]
-    return score
+    l_prob = peptide[0][3]
+    r_prob = peptide[-1][3]
+    mid_prob = 1
+    for entry in peptide[1:-1]:
+        mid_prob *= entry[3]
+    mid_prob = 1 - mid_prob
+    prob = l_prob * mid_prob * r_prob
+    return prob
 
 
 def append_peptide(peptide_dict, genome, end):
-    peptide_lens = [7, 8, 9]
+    peptide_lens = [8, 9, 10]
     for peptide_len in peptide_lens:
         try:
             peptide = genome[end-peptide_len:end+1]
-            if len(peptide) != 0:
-                peptide_dict[name_peptide(peptide)].append(
-                    [genome[end][4], genome[end-peptide_len][0], compute_score(peptide)])
+            if len(peptide) in [9, 10, 11]:
+                peptide_dict[name_peptide(peptide[1:])].append(
+                    [peptide[-1][4], peptide[1][0], compute_score(peptide), 0.0])
         except IndexError:
             continue
-
     return peptide_dict
 
 
