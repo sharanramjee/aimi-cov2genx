@@ -20,10 +20,14 @@ def compute_score(peptide):
 def append_peptide(peptide_dict, genome, end):
     peptide_lens = [7, 8, 9]
     for peptide_len in peptide_lens:
-        peptide = genome[end-peptide_len:end+1]
-        if len(peptide) != 0:
-            peptide_dict[name_peptide(peptide)].append([genome[end][4], genome[end-peptide_len][0],
-                                                        compute_score(peptide)])
+        try:
+            peptide = genome[end-peptide_len:end+1]
+            if len(peptide) != 0:
+                peptide_dict[name_peptide(peptide)].append(
+                    [genome[end][4], genome[end-peptide_len][0], compute_score(peptide)])
+        except IndexError:
+            continue
+
     return peptide_dict
 
 
