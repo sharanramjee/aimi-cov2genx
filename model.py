@@ -55,7 +55,7 @@ def distribution_test(dist):
 
 
 if __name__ == '__main__':
-    x_train, x_test, y_train, y_test = load_data('dataframe.pickle')
+    x_train, x_test, y_train, y_test = load_data('dataframe_34k.pickle')
     reg = train(x_train, y_train)
     evaluate(reg, x_test, y_test)
     distribution_test(y_test)
