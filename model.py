@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import xgboost as xgb
+import scipy.stats as ss
 from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import train_test_split
 
@@ -42,10 +43,19 @@ def train(x_train, y_train):
 def evaluate(reg, x_test, y_test):
     preds = reg.predict(x_test)
     rmse = np.sqrt(mean_squared_error(y_test, preds))
-    print('RMSE:', rmse)
+    range_val = np.ptp(y_test)
+    nrmse = rmse/range_val
+    print('NRMSE:', nrmse)
+
+
+def distribution_test(dist):
+    chisquare_val, p_val = ss.chisquare(dist)
+    print('Chisquare:', chisquare_val)
+    print('P:', p_val)
 
 
 if __name__ == '__main__':
     x_train, x_test, y_train, y_test = load_data('dataframe.pickle')
     reg = train(x_train, y_train)
     evaluate(reg, x_test, y_test)
+    distribution_test(y_test)
