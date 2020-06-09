@@ -20,9 +20,16 @@ def to_numeric(df, cols):
 
 
 def split_data(df):
-    x = df.drop(columns=['ma_binding_score'])
-    y = df['ma_binding_score']
-    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.1, random_state=101)
+    # x = df.drop(columns=['ma_binding_score'])
+    # y = df['ma_binding_score']
+    train = df['days_since_g0'] < 20200401
+    train_data = df[train]
+    test_data = df[~train]
+    x_train = train_data.drop(columns=['ma_binding_score'])
+    y_train = train_data['ma_binding_score']
+    x_test = test_data.drop(columns=['ma_binding_score'])
+    y_test = test_data['ma_binding_score']
+    # x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.1, random_state=101)
     return x_train, x_test, y_train, y_test
 
 
@@ -41,7 +48,9 @@ def train(x_train, y_train):
 
 
 def evaluate(reg, x_test, y_test):
-    preds = reg.predict(x_test)
+    preds = pd.Series(reg.predict(x_test))
+    preds = np.nan_to_num(preds.fillna(0))
+    y_test = np.nan_to_num(y_test.fillna(0))
     rmse = np.sqrt(mean_squared_error(y_test, preds))
     range_val = np.ptp(y_test)
     nrmse = rmse/range_val
@@ -55,7 +64,7 @@ def distribution_test(dist):
 
 
 if __name__ == '__main__':
-    x_train, x_test, y_train, y_test = load_data('dataframe_34k.pickle')
+    x_train, x_test, y_train, y_test = load_data('dataframe_347k.pickle')
     reg = train(x_train, y_train)
     evaluate(reg, x_test, y_test)
     distribution_test(y_test)

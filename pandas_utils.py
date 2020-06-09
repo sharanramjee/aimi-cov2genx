@@ -36,7 +36,7 @@ def data_generator(filename):
             next(csv_reader)
             while True:
                 yield(next(csv_reader))
-                for j in range(10000):
+                for j in range(1000):
                     next(csv_reader)
     except:
         return
