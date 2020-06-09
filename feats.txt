@@ -1,0 +1,10 @@
+Input features
+0. peptide (Col H)	 		categorical
+1. position in protein (Col C)   	int
+2. edit distance (Col R)	        int
+3. hla (Col A) 				categorical
+4. city/country (Col B)			categorical
+5. days since g0 (Col B)             	int
+
+Labels
+8. ma binding score (Col U)		float
