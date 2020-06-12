@@ -1,2 +1,2 @@
 # aimi-cov2genx
-Stanford AIMI Researchathon 2020
+Stanford AIMI-HIAE COVID-19 Researchathon 2020
